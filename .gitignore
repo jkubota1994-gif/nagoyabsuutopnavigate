@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary data files / downloads
+scripts/*.zip
+scripts/raw/
+*.log
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo

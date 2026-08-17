@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プライバシーポリシー - 名古屋市営バス停ナビ＆行き先案内</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      line-height: 1.7;
+      color: #1e293b;
+      background-color: #f8fafc;
+      padding: 24px;
+      margin: 0;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    h1 {
+      font-size: 22px;
+      border-bottom: 2px solid #2563eb;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 17px;
+      margin-top: 24px;
+      margin-bottom: 8px;
+      color: #1e40af;
+    }
+    p, li {
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 24px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>プライバシーポリシー</h1>
+    <p>「名古屋市営バス停ナビ＆行き先案内」（以下「当アプリ」）における、利用者の位置情報および個人情報の取扱いについて以下の通り定めます。</p>
+
+    <h2>1. 位置情報の取得と利用目的</h2>
+    <p>当アプリは、利用者の現在地から最寄りのバス停を検索し、地図上に表示および徒歩道案内を提供することを目的として、ブラウザの Geolocation API を通じて位置情報（緯度・経度）を取得します。</p>
+
+    <h2>2. 位置情報の保存およびサーバー送信について</h2>
+    <ul>
+      <li><strong>クライアント側での完結:</strong> 取得した位置情報は、利用者の端末（ブラウザ）のメモリ上でのみ処理され、当アプリの管理サーバーに送信または保存されることは一切ありません。</li>
+      <li><strong>履歴の非保持:</strong> ページを閉じるかリロードすると、位置情報データは自動的に破棄されます。</li>
+    </ul>
+
+    <h2>3. 外部サービスへの送信</h2>
+    <p>当アプリでは以下の外部オープンソースAPIを利用しています：</p>
+    <ul>
+      <li><strong>OpenStreetMap タイル:</strong> 地図画像の表示</li>
+      <li><strong>OSRM (FOSSGIS e.V.):</strong> 徒歩ルート計算（出発地・目的地の座標のみ送信され、個人を特定する情報は含まれません）</li>
+      <li><strong>Nominatim:</strong> 住所・施設名検索（入力された検索語句のみ送信されます）</li>
+    </ul>
+
+    <h2>4. Cookieおよびアクセス解析</h2>
+    <p>当アプリでは、トラッキングを目的としたCookieや第三者によるアクセス解析ツールは使用しておりません。設定情報（検索半径の設定等）はブラウザのローカルストレージにのみ保存されます。</p>
+
+    <h2>5. お問い合わせ</h2>
+    <p>プライバシーに関するお問い合わせは、開発者のGitHubリポジトリまたは指定の連絡窓口までお願いいたします。</p>
+
+    <p style="margin-top: 30px; font-size: 12px; color: #64748b;">制定日: 2026年3月</p>
+    <a href="../index.html" class="back-link">← アプリに戻る</a>
+  </div>
+</body>
+</html>

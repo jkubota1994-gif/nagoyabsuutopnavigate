@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>名古屋市営バス停ナビ＆行き先案内 - 最寄りバス停・運行系統・徒歩道案内</title>
+  
+  <meta name="description" content="名古屋市営バスの全バス停（のりば）・運行系統・時刻表・行き先案内・徒歩道案内を提供するWebアプリ。現在地から最寄りバス停へのルートや次のバスの発車時刻を案内します。">
+  <meta name="theme-color" content="#1976d2">
+
+  <!-- Google Fonts: Noto Sans JP & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Free 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Leaflet 1.9.4 CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <!-- Leaflet.markercluster CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+  <!-- メインスタイル -->
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+
+  <div id="app-viewport">
+    <!-- 全画面地図 -->
+    <div id="map-container"></div>
+
+    <!-- 上部フローティングバー（検索 ＆ 半径フィルター） -->
+    <header id="top-floating-bar">
+      <div id="search-bar-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="search-input" placeholder="バス停名・目的地・施設名を検索..." autocomplete="off">
+        <button type="button" id="search-clear-btn" class="search-clear-btn" style="display: none;" aria-label="検索をクリア">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <!-- 検索サジェストドロップダウン -->
+        <div id="search-results-dropdown" class="is-hidden"></div>
+      </div>
+
+      <!-- 半径切り替えチップ -->
+      <nav id="radius-filter-bar" aria-label="検索範囲">
+        <button type="button" class="radius-chip is-active" data-radius="250">250m</button>
+        <button type="button" class="radius-chip" data-radius="500">500m</button>
+        <button type="button" class="radius-chip" data-radius="1000">1km</button>
+      </nav>
+    </header>
+
+    <!-- フローティングアクションボタン (FAB) -->
+    <aside id="floating-actions">
+      <button type="button" class="fab-btn" id="btn-re-locate" title="現在地を再取得" aria-label="現在地">
+        <i class="fa-solid fa-location-crosshairs"></i>
+      </button>
+      <button type="button" class="fab-btn" id="btn-show-about" title="このアプリについて・利用規約" aria-label="情報">
+        <i class="fa-solid fa-circle-info"></i>
+      </button>
+    </aside>
+
+    <!-- ボトムシート（下部パネル） -->
+    <main id="bottom-sheet">
+      <div id="sheet-drag-handle" title="パネルを展開/格納">
+        <div class="drag-pill"></div>
+      </div>
+      <div id="sheet-content-body">
+        <!-- JS で動的コンテンツ（周辺バス停一覧 / バス停詳細 / 道案内手順）が挿入されます -->
+      </div>
+    </main>
+  </div>
+
+  <!-- ローディングオーバーレイ -->
+  <div id="app-loading-overlay">
+    <div class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
+    <div id="loading-message">名古屋市営バスデータを読み込み中...</div>
+  </div>
+
+  <!-- トースト通知コンテナ -->
+  <div id="toast-container"></div>
+
+  <!-- 位置情報プライバシー許諾モーダル -->
+  <div id="modal-geo-permission" class="modal-backdrop is-hidden">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-location-dot" style="color: #1976d2;"></i> 位置情報の利用について</h3>
+      </div>
+      <div class="modal-body">
+        <p>当アプリは、あなたの現在地から<strong>最寄りのバス停（のりば）を検索し、徒歩ルートを案内する</strong>ために位置情報を使用します。</p>
+        <div class="alert-box" style="margin: 14px 0; background: #e8f5e9; border-color: #a5d6a7; color: #2e7d32;">
+          <i class="fa-solid fa-shield-halved"></i> <strong>プライバシー保護設計</strong><br>
+          位置情報はあなたの端末（ブラウザ）内でのみ処理され、サーバーに保存・送信されることは一切ありません。
+        </div>
+        <p style="font-size: 13px; color: #64748b;">※位置情報を許可しない場合でも、名古屋駅を中心とした検索やテキスト検索はご利用いただけます。</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="btn-deny-geo" style="width: auto;">使わない</button>
+        <button type="button" class="btn-primary" id="btn-allow-geo" style="width: auto;">
+          <i class="fa-solid fa-location-arrow"></i> 現在地を使う
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- このアプリについてモーダル -->
+  <div id="modal-about" class="modal-backdrop is-hidden">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-bus" style="color: #1976d2;"></i> このアプリについて</h3>
+        <button type="button" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>名古屋市が公開するオープンデータ（GTFS-JP）を活用し、現在地から最寄りのバス停のりば、運行系統、行先、時刻表、および徒歩ルートを案内するWebアプリです。</p>
+        
+        <h4 style="margin-top: 16px; margin-bottom: 8px; font-size: 14px;"><i class="fa-solid fa-scale-balanced"></i> 法的情報・データ出典</h4>
+        <ul style="padding-left: 20px; font-size: 13px; line-height: 1.8;">
+          <li><a href="./legal/about.html" target="_blank">データ出典・オープンソースクレジット</a></li>
+          <li><a href="./legal/privacy-policy.html" target="_blank">プライバシーポリシー</a></li>
+          <li><a href="./legal/terms.html" target="_blank">利用規約・免責事項</a></li>
+        </ul>
+
+        <div class="alert-box" style="margin-top: 16px;">
+          <small>※本アプリは個人が開発した非公式ツールです。名古屋市交通局が公認・推奨するものではありません。</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary modal-close-btn" style="width: auto;">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet 1.9.4 JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Leaflet.markercluster JS -->
+  <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+  <!-- アプリケーションモジュール -->
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+name: Auto Update GTFS Data
+
+on:
+  schedule:
+    # 毎月1日午前3時(JST: 12:00 UTC)に定期実行
+    - cron: '0 18 1 * *'
+  workflow_dispatch: # 手動実行も可能
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run GTFS Converter
+        run: |
+          python scripts/convert_gtfs.py
+          python scripts/generate_subway_data.py
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "No changes in GTFS data."
+          else
+            git commit -m "chore(data): auto-update Nagoya Bus GTFS and Subway datasets"
+            git push
+          fi

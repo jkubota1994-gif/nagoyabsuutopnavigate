@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>このアプリについて・クレジット - 名古屋市営バス停ナビ＆行き先案内</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      line-height: 1.7;
+      color: #1e293b;
+      background-color: #f8fafc;
+      padding: 24px;
+      margin: 0;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    h1 {
+      font-size: 22px;
+      border-bottom: 2px solid #2563eb;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 17px;
+      margin-top: 24px;
+      margin-bottom: 8px;
+      color: #1e40af;
+    }
+    p, li {
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    .license-card {
+      background: #f1f5f9;
+      border-left: 4px solid #3b82f6;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 24px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>このアプリについて・帰属表示</h1>
+    <p>「名古屋市営バス停ナビ＆行き先案内」は、公共交通オープンデータとオープンソースソフトウェアを活用したWebアプリケーションです。</p>
+
+    <h2>データ出典およびライセンス（帰属表示）</h2>
+
+    <div class="license-card">
+      <strong>名古屋市営バス運行データ</strong><br>
+      データ元: 名古屋市「<a href="https://data.bodik.jp/dataset/231002_7109030000_bus-gtfs-jp" target="_blank" rel="noopener">市バスGTFS-JPデータ</a>」<br>
+      ライセンス: <a href="https://creativecommons.org/licenses/by/4.0/deed.ja" target="_blank" rel="noopener">クリエイティブ・コモンズ 表示 4.0 国際 (CC BY 4.0)</a><br>
+      ※本アプリは上記オープンデータを加工して作成しています。名古屋市が公認・推奨するものではありません。
+    </div>
+
+    <div class="license-card">
+      <strong>地図データ</strong><br>
+      データ元: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a><br>
+      ライセンス: <a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener">Open Database License (ODbL)</a>
+    </div>
+
+    <div class="license-card">
+      <strong>歩行者道案内（ルーティング）</strong><br>
+      技術: <a href="http://project-osrm.org/" target="_blank" rel="noopener">OSRM (Open Source Routing Machine)</a> (BSD 2-Clause License)<br>
+      公開サーバー提供: <a href="https://www.fossgis.de/" target="_blank" rel="noopener">FOSSGIS e.V.</a>
+    </div>
+
+    <div class="license-card">
+      <strong>施設・住所検索（ジオコーディング）</strong><br>
+      技術・サーバー: <a href="https://nominatim.org/" target="_blank" rel="noopener">OpenStreetMap Nominatim</a> (GNU GPL v3)
+    </div>
+
+    <h2>利用オープンソースライブラリ</h2>
+    <ul>
+      <li><a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet 1.9.4</a> (BSD 2-Clause License)</li>
+      <li><a href="https://github.com/Leaflet/Leaflet.markercluster" target="_blank" rel="noopener">Leaflet.markercluster</a> (MIT License)</li>
+      <li><a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome Free 6</a> (CC BY 4.0 / SIL OFL / MIT)</li>
+      <li><a href="https://fonts.google.com/specimen/Noto+Sans+JP" target="_blank" rel="noopener">Google Fonts (Noto Sans JP)</a> (SIL Open Font License 1.1)</li>
+    </ul>
+
+    <a href="../index.html" class="back-link">← アプリに戻る</a>
+  </div>
+</body>
+</html>
